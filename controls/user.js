@@ -1,13 +1,13 @@
 const User = require("../models/user");
 const Doctor = require("../models/doctor");
-const bycrypt = require("bcryptjs");
+const bcrypt = require("bcryptjs");
 const Patient = require("../models/patient");
 const jwt = require("jsonwebtoken");
 
 exports.userId = (req, res, next, Id) => {
   User.findById(Id).exec((err, user) => {
     if (err || !user) {
-      return res.status(400).json({ message: err.message });
+      return res.status(400).json({ message: "User not found" });
     }
     req.userDetails = user;
     next();
@@ -24,7 +24,7 @@ exports.signIn = (req, res) => {
         return res.status(400).json({ message: "No user present" });
       }
       getuser = user;
-      return bycrypt.compare(req.body.password, user.password);
+      return bcrypt.compare(req.body.password, user.password);
     })
     .then((response) => {
       if (!response) {
@@ -54,7 +54,7 @@ exports.signIn = (req, res) => {
 // *******************************************user signUp*************************************************
 
 exports.signUp = (req, res) => {
-  bycrypt.hash(req.body.password, 10).then((hash) => {
+  bcrypt.hash(req.body.password, 10).then((hash) => {
     let user = new User({
       email: req.body.email,
       password: hash,
@@ -91,7 +91,7 @@ exports.signUpOfPatient = (req, res) => {
     var randomNumber = Math.floor(Math.random() * chars.length);
     password += chars.substring(randomNumber, randomNumber + 1);
   }
-  bycrypt.hash(password, 10).then((hash) => {
+  bcrypt.hash(password, 10).then((hash) => {
     let user = new User({
       email: req.body.email,
       password: hash,
@@ -101,16 +101,18 @@ exports.signUpOfPatient = (req, res) => {
         return res.status(400).json({ message: "User already exists" });
       }
       let piaId = req.userDetails._id;
-      createPatientDetails(req.body, user._id, piaId);
+      let conId = req.condition._id;
+      createPatientDetails(req.body, user._id, piaId, conId);
       res.json({ email: req.body.email, password: password });
     });
   });
 };
 
-const createPatientDetails = async (reqbody, Id, piaId) => {
+const createPatientDetails = async (reqbody, Id, piaId, conId) => {
   let PatientDetails = new Patient({
     userId: Id,
-    patientId: piaId,
+    DoctorId: piaId,
+    conditionId: conId,
     name: reqbody.name,
     age: reqbody.age,
     phoneNumber: reqbody.phoneNumber,
@@ -123,7 +125,7 @@ const createPatientDetails = async (reqbody, Id, piaId) => {
 // ************************************ forgot password(updatepassword) ***********************************
 
 exports.updatepassword = (req, res) => {
-  bycrypt.hash(req.body.password, 10).then((hash) => {
+  bcrypt.hash(req.body.password, 10).then((hash) => {
     let password = hash;
     User.findOneAndUpdate(
       { email: req.body.email },

@@ -19,6 +19,24 @@ const {
 } = require("./controls/user");
 const { doctorId, getDoctor, getAllDoctors } = require("./controls/doctor");
 const { PatientId, getPatient, getallPatients } = require("./controls/patient");
+const {
+  ConditionId,
+  createCondtions,
+  getAllConditions,
+  getConditions,
+} = require("./controls/Conditions");
+const {
+  SuggestionId,
+  createSuggestion,
+  getAllSuggestion,
+  getSuggestion,
+} = require("./controls/Suggestions");
+const {
+  dailyReportId,
+  createdailyReport,
+  getAlldailyReport,
+  getdailyReport,
+} = require("./controls/dailyReport");
 
 // mongodb connection
 
@@ -43,10 +61,9 @@ app.param("userId", userId);
 app.post("/api/signUp", signUp);
 app.post("/api/signIn", signIn);
 app.post("/api/updatepassword", updatepassword);
-app.post("/api/signUpOfPatient/:userId", signUpOfPatient);
+app.post("/api/signUpOfPatient/:userId/:ConditionId", signUpOfPatient);
 app.get("/api/getuser/:userId", getuser);
 app.get("/api/getAllusers", getAllUser);
-
 // *************************************************** doctor routes*******************************************
 
 app.param("doctorId", doctorId);
@@ -58,6 +75,30 @@ app.get("/api/getallDoctorDetails", getAllDoctors);
 app.param("PatientId", PatientId);
 app.get("/api/getPatient/:PatientId", getPatient);
 app.get("/api/getallPatients", getallPatients);
+
+// *************************************************** Conditions routes*******************************************
+
+app.param("ConditionId", ConditionId);
+app.post("/api/createCondtions", createCondtions);
+app.get("/api/getAllconditions", getAllConditions);
+app.get("/api/getconditions/:ConditionId", getConditions);
+
+// *************************************************** Suggestions routes*******************************************
+
+app.param("SuggestionId", SuggestionId);
+app.post("/api/createSuggestion/:ConditionId", createSuggestion);
+app.get("/api/getAllSuggestion", getAllSuggestion);
+app.get("/api/getSuggestion/:SuggestionId", getSuggestion);
+
+// ***************************************************dailyReport routes*******************************************
+
+app.param("dailyReportId", dailyReportId);
+app.post(
+  "/api/createdailyReport/:PatientId/:ConditionId/:SuggestionId",
+  createdailyReport
+);
+app.get("/api/getAlldailyReport", getAlldailyReport);
+app.get("/api/getdailyReport/:dailyReportId", getdailyReport);
 
 // checking server status
 

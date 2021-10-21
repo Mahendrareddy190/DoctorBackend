@@ -3,12 +3,16 @@ const { ObjectId } = mongoose.Schema;
 const patientSchema = new mongoose.Schema(
   {
     userId: {
-      type: ObjectId,    
+      type: ObjectId,
       ref: "User",
     },
-    patientId: {
+    DoctorId: {
       type: ObjectId,
       ref: "Doctor",
+    },
+    conditionId: {
+      type: ObjectId,
+      ref: "Conditions",
     },
     name: {
       type: String,
@@ -33,7 +37,7 @@ const patientSchema = new mongoose.Schema(
       default: false,
     },
   },
-  { timeStamp: true }
+  { timeStamps: true }
 );
 
 module.exports = mongoose.model("Patient", patientSchema);

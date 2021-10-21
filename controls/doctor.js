@@ -17,10 +17,12 @@ exports.getDoctor = (req, res) => {
 };
 
 exports.getAllDoctors = (req, res) => {
-  Doctor.find().exec((err, doctor) => {
-    if (err) {
-      return res.status(400).json({ message: "can`t get all doctorDetails" });
-    }
-    res.json(doctor);
-  });
+  Doctor.find()
+    .populate("User")
+    .exec((err, doctor) => {
+      if (err) {
+        return res.status(400).json({ message: "can`t get all doctorDetails" });
+      }
+      res.json(doctor);
+    });
 };
