@@ -17,6 +17,6 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-userSchema.plugin(uniquevALIDATOR,{ message: "email alread exisits" });
+userSchema.plugin(uniquevALIDATOR, { message: "email already exisits" });
 
 module.exports = mongoose.model("User", userSchema);

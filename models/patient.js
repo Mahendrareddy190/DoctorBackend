@@ -34,7 +34,11 @@ const patientSchema = new mongoose.Schema(
     },
     status: {
       type: Boolean,
-      default: false,
+      default: true,
+    },
+    date: {
+      type: Date,
+      default: Date.now(),
     },
   },
   { timeStamps: true }

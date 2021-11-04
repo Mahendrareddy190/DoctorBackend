@@ -1,4 +1,5 @@
 const Daily = require("../models/dailyReport");
+const Patient = require("../models/patient");
 
 exports.dailyReportId = (req, res, next, Id) => {
   Daily.findById(Id)
@@ -27,7 +28,17 @@ exports.createdailyReport = (req, res) => {
     if (err) {
       return res.status(400).json({ message: "Error in saving daily report" });
     }
-    res.json(dailyReport);
+    Patient.findOneAndUpdate(
+      { userId: req.userDetails._id },
+      {
+        $set: { date: Date.now() },
+      }
+    ).exec((err, pia) => {
+      if (err) {
+        return res.status(400).json({ message: "can`t update date" });
+      }
+      res.json(dailyReport);
+    });
   });
 };
 

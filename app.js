@@ -18,7 +18,12 @@ const {
   signIn,
 } = require("./controls/user");
 const { doctorId, getDoctor, getAllDoctors } = require("./controls/doctor");
-const { PatientId, getPatient, getallPatients } = require("./controls/patient");
+const {
+  PatientId,
+  getPatient,
+  getallPatients,
+  updatePatient,
+} = require("./controls/patient");
 const {
   ConditionId,
   createCondtions,
@@ -59,11 +64,12 @@ app.use(cors());
 
 app.param("userId", userId);
 app.post("/api/signUp", signUp);
-app.post("/api/signIn", signIn);
+app.post("/api/signIn/:userId", signIn);
 app.post("/api/updatepassword", updatepassword);
 app.post("/api/signUpOfPatient/:userId/:ConditionId", signUpOfPatient);
 app.get("/api/getuser/:userId", getuser);
 app.get("/api/getAllusers", getAllUser);
+
 // *************************************************** doctor routes*******************************************
 
 app.param("doctorId", doctorId);
@@ -75,9 +81,9 @@ app.get("/api/getallDoctorDetails", getAllDoctors);
 app.param("PatientId", PatientId);
 app.get("/api/getPatient/:PatientId", getPatient);
 app.get("/api/getallPatients", getallPatients);
+app.post("/api/updateStatus/:userId/:PatientId", updatePatient);
 
 // *************************************************** Conditions routes*******************************************
-
 app.param("ConditionId", ConditionId);
 app.post("/api/createCondtions", createCondtions);
 app.get("/api/getAllconditions", getAllConditions);
@@ -94,7 +100,7 @@ app.get("/api/getSuggestion/:SuggestionId", getSuggestion);
 
 app.param("dailyReportId", dailyReportId);
 app.post(
-  "/api/createdailyReport/:PatientId/:ConditionId/:SuggestionId",
+  "/api/createdailyReport/:PatientId/:ConditionId/:SuggestionId/:userId",
   createdailyReport
 );
 app.get("/api/getAlldailyReport", getAlldailyReport);

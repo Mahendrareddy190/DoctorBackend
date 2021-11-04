@@ -23,7 +23,7 @@ const dailyReportSchema = new mongoose.Schema(
       required: true,
     },
     painLevel: {
-      type: String,
+      type: Number,
       trim: true,
     },
   },

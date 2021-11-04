@@ -38,10 +38,16 @@ exports.signIn = (req, res) => {
         "secret",
         { expiresIn: "1h" }
       );
-      res.status(200).json({
-        Token: jwtToken,
-        expiresIn: 3600,
-        user: getuser,
+      Patient.findOne({ userId: req.userDetails._id }).then((response) => {
+        if (!response) {
+          return res.status(400).json({ message: "no response from patient" });
+        }
+        res.status(200).json({
+          Token: jwtToken,
+          expiresIn: 3600,
+          user: getuser,
+          patient: response,
+        });
       });
     })
     .catch((err) => {
@@ -132,7 +138,7 @@ exports.updatepassword = (req, res) => {
       { $set: { password: password } }
     ).exec((err, user) => {
       if (err) {
-        return res.status(400).json({ message: "Email does not exist" });
+        return res.status(400).json({ message: "password has not updated" });
       }
       res.json(user);
     });
