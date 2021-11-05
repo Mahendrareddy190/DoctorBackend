@@ -49,6 +49,7 @@ exports.getdailyReport = (req, res) => {
 exports.getAlldailyReport = (req, res) => {
   Daily.find()
     .populate("patientId")
+    .populate("conditionId")
     .exec((err, daily) => {
       if (err) {
         return res
