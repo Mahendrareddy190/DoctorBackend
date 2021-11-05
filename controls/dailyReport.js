@@ -2,15 +2,13 @@ const Daily = require("../models/dailyReport");
 const Patient = require("../models/patient");
 
 exports.dailyReportId = (req, res, next, Id) => {
-  Daily.findById(Id)
-    .populate("Patient")
-    .exec((err, Report) => {
-      if (err) {
-        return res.status(400).json({ message: " ReportId not created" });
-      }
-      req.daily = Report;
-      next();
-    });
+  Daily.findById(Id).exec((err, Report) => {
+    if (err) {
+      return res.status(400).json({ message: " ReportId not created" });
+    }
+    req.daily = Report;
+    next();
+  });
 };
 
 exports.createdailyReport = (req, res) => {
@@ -23,6 +21,8 @@ exports.createdailyReport = (req, res) => {
     suggestionId: suggId,
     dailyUpdate: req.body.dailyUpdate,
     painLevel: req.body.painLevel,
+    review: req.body.review,
+    reviewStatus: req.body.reviewStatus,
   });
   dailyReport.save((err, dailyReport) => {
     if (err) {
@@ -57,4 +57,18 @@ exports.getAlldailyReport = (req, res) => {
       }
       res.json(daily);
     });
+};
+
+exports.Reportupdate = (req, res) => {
+  Daily.findOneAndUpdate(
+    { _id: req.daily._id },
+    {
+      $set: req.body,
+    }
+  ).exec((err, dailyReport) => {
+    if (err) {
+      return res.status(400).json({ message: "Error in updating dailyReport" });
+    }
+    res.json(dailyReport);
+  });
 };

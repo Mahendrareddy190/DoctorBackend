@@ -41,7 +41,15 @@ const {
   createdailyReport,
   getAlldailyReport,
   getdailyReport,
+  Reportupdate,
 } = require("./controls/dailyReport");
+
+const {
+  NotificationId,
+  createNotification,
+  getallnotification,
+  getNotification,
+} = require("./controls/Notification");
 
 // mongodb connection
 
@@ -64,9 +72,9 @@ app.use(cors());
 
 app.param("userId", userId);
 app.post("/api/signUp", signUp);
-app.post("/api/signIn/:userId", signIn);
+app.post("/api/signIn", signIn);
 app.post("/api/updatepassword", updatepassword);
-app.post("/api/signUpOfPatient/:userId/:ConditionId", signUpOfPatient);
+app.post("/api/signUpOfPatient/:doctorId/:ConditionId", signUpOfPatient);
 app.get("/api/getuser/:userId", getuser);
 app.get("/api/getAllusers", getAllUser);
 
@@ -81,9 +89,10 @@ app.get("/api/getallDoctorDetails", getAllDoctors);
 app.param("PatientId", PatientId);
 app.get("/api/getPatient/:PatientId", getPatient);
 app.get("/api/getallPatients", getallPatients);
-app.post("/api/updateStatus/:userId/:PatientId", updatePatient);
+app.put("/api/updateStatus/:doctorId/:PatientId", updatePatient);
 
 // *************************************************** Conditions routes*******************************************
+
 app.param("ConditionId", ConditionId);
 app.post("/api/createCondtions", createCondtions);
 app.get("/api/getAllconditions", getAllConditions);
@@ -105,6 +114,14 @@ app.post(
 );
 app.get("/api/getAlldailyReport", getAlldailyReport);
 app.get("/api/getdailyReport/:dailyReportId", getdailyReport);
+app.put("/api/updatereport/:dailyReportId", Reportupdate);
+
+// *************************************************** Conditions routes*******************************************
+
+app.param("NotificationId", NotificationId);
+app.post("/api/createNotification/:userId", createNotification);
+app.get("/api/getallnotification", getallnotification);
+app.get("/api/getNotification/:NotificationId", getNotification);
 
 // checking server status
 

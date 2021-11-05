@@ -1,15 +1,13 @@
 const Patient = require("../models/patient");
 
 exports.PatientId = (req, res, next, Id) => {
-  Patient.findById(Id)
-    .populate("User")
-    .exec((err, patient) => {
-      if (err || !patient) {
-        return res.status(400).json({ message: "patient Id not created" });
-      }
-      req.Patient = patient;
-      next();
-    });
+  Patient.findById(Id).exec((err, patient) => {
+    if (err || !patient) {
+      return res.status(400).json({ message: "patient Id not created" });
+    }
+    req.Patient = patient;
+    next();
+  });
 };
 
 exports.getPatient = (req, res) => {
@@ -17,18 +15,12 @@ exports.getPatient = (req, res) => {
 };
 
 exports.updatePatient = (req, res) => {
-  let doctorId = req.userDetails._id;
+  let doctorId = req.doctorDetails._id;
   let PatientId = req.Patient._id;
-  Patient.findByIdAndUpdate(
+  Patient.findOneAndUpdate(
     { DoctorId: doctorId, _id: PatientId },
     {
-      $set: {
-        name: req.body.name,
-        age: req.body.age,
-        phoneNumber: req.body.phoneNumber,
-        location: req.body.location,
-        status: req.body.status,
-      },
+      $set: req.body,
     }
   ).exec((err, user) => {
     if (err) {
@@ -39,10 +31,12 @@ exports.updatePatient = (req, res) => {
 };
 
 exports.getallPatients = (req, res) => {
-  Patient.find().exec((err, patient) => {
-    if (err || !patient) {
-      return res.status(400).json({ message: "can`t get all users" });
-    }
-    res.json(patient);
-  });
+  Patient.find()
+    .populate("DoctorId")
+    .exec((err, patient) => {
+      if (err || !patient) {
+        return res.status(400).json({ message: "can`t get all users" });
+      }
+      res.json(patient);
+    });
 };

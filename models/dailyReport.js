@@ -25,6 +25,16 @@ const dailyReportSchema = new mongoose.Schema(
     painLevel: {
       type: Number,
       trim: true,
+      default: 0,
+      
+    },
+    review: {
+      type: String,
+      trim: true,
+    },
+    reviewStatus: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }

@@ -38,17 +38,33 @@ exports.signIn = (req, res) => {
         "secret",
         { expiresIn: "1h" }
       );
-      Patient.findOne({ userId: req.userDetails._id }).then((response) => {
-        if (!response) {
-          return res.status(400).json({ message: "no response from patient" });
-        }
-        res.status(200).json({
-          Token: jwtToken,
-          expiresIn: 3600,
-          user: getuser,
-          patient: response,
+      if (getuser.type == 0) {
+        Doctor.findOne({ userId: getuser._id }).then((response) => {
+          if (!response) {
+            return res.status(400).json({ message: "no response from doctor" });
+          }
+          res.status(200).json({
+            Token: jwtToken,
+            expiresIn: 3600,
+            user: getuser,
+            userData: response,
+          });
         });
-      });
+      } else {
+        Patient.findOne({ userId: getuser._id }).then((response) => {
+          if (!response) {
+            return res
+              .status(400)
+              .json({ message: "no response from patient" });
+          }
+          res.status(200).json({
+            Token: jwtToken,
+            expiresIn: 3600,
+            user: getuser,
+            userData: response,
+          });
+        });
+      }
     })
     .catch((err) => {
       return res.status(401).json({
@@ -64,6 +80,7 @@ exports.signUp = (req, res) => {
     let user = new User({
       email: req.body.email,
       password: hash,
+      type: req.body.type,
     });
     user.save((err, user) => {
       if (err || !user) {
@@ -101,25 +118,27 @@ exports.signUpOfPatient = (req, res) => {
     let user = new User({
       email: req.body.email,
       password: hash,
+      type: req.body.type,
     });
     user.save((err, user) => {
       if (err || !user) {
         return res.status(400).json({ message: "User already exists" });
       }
-      let piaId = req.userDetails._id;
+      let doctorId = req.doctorDetails._id;
       let conId = req.condition._id;
-      createPatientDetails(req.body, user._id, piaId, conId);
+      createPatientDetails(req.body, user._id, doctorId, conId);
       res.json({ email: req.body.email, password: password });
     });
   });
 };
 
-const createPatientDetails = async (reqbody, Id, piaId, conId) => {
+const createPatientDetails = async (reqbody, Id, doctorId, conId) => {
   let PatientDetails = new Patient({
     userId: Id,
-    DoctorId: piaId,
+    DoctorId: doctorId,
     conditionId: conId,
     name: reqbody.name,
+    gender: reqbody.gender,
     age: reqbody.age,
     phoneNumber: reqbody.phoneNumber,
     location: reqbody.location,

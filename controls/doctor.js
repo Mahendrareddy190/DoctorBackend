@@ -1,15 +1,13 @@
 const Doctor = require("../models/doctor");
 
 exports.doctorId = (req, res, next, Id) => {
-  Doctor.findById(Id)
-    .populate("User")
-    .exec((err, doctor) => {
-      if (err || !doctor) {
-        return res.status(400).json({ message: err.message });
-      }
-      req.doctorDetails = doctor;
-      next();
-    });
+  Doctor.findById(Id).exec((err, doctor) => {
+    if (err || !doctor) {
+      return res.status(400).json({ message: err.message });
+    }
+    req.doctorDetails = doctor;
+    next();
+  });
 };
 
 exports.getDoctor = (req, res) => {

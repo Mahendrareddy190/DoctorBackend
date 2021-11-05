@@ -13,6 +13,10 @@ const userSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    type: {
+      type: Number,
+      default: 1,
+    },
   },
   { timestamps: true }
 );
