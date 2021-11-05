@@ -32,6 +32,7 @@ exports.updatePatient = (req, res) => {
 
 exports.getallPatients = (req, res) => {
   Patient.find()
+    .populate("userId", "email")
     .populate("DoctorId")
     .populate("conditionId")
     .exec((err, patient) => {
