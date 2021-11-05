@@ -87,7 +87,7 @@ exports.signUp = (req, res) => {
         return res.status(400).json({ message: "user already exists" });
       }
       createDoctorDetails(req.body, user._id);
-      res.json({ message: "successfully created" });
+      res.status(200).json({ message: "successfully created" });
     });
   });
 };
@@ -127,7 +127,7 @@ exports.signUpOfPatient = (req, res) => {
       let doctorId = req.doctorDetails._id;
       let conId = req.condition._id;
       createPatientDetails(req.body, user._id, doctorId, conId);
-      res.json({ email: req.body.email, password: password });
+      res.status(200).json({ email: req.body.email, password: password });
     });
   });
 };
