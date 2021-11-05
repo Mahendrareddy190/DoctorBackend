@@ -33,6 +33,7 @@ exports.updatePatient = (req, res) => {
 exports.getallPatients = (req, res) => {
   Patient.find()
     .populate("DoctorId")
+    .populate("conditionId")
     .exec((err, patient) => {
       if (err || !patient) {
         return res.status(400).json({ message: "can`t get all users" });
