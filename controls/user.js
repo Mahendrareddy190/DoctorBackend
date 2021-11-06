@@ -21,14 +21,14 @@ exports.signIn = (req, res) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (!user) {
-        return res.status(400).json({ message: "No user present" });
+        return res.status(200).json({ message: "No user present" });
       }
       getuser = user;
       return bcrypt.compare(req.body.password, user.password);
     })
     .then((response) => {
       if (!response) {
-        return res.status(400).json({ message: "no response " });
+        return res.status(200).json({ message: "no response " });
       }
       let jwtToken = jwt.sign(
         {
@@ -50,7 +50,10 @@ exports.signIn = (req, res) => {
             userData: response,
           });
         });
-      } else {
+      }
+       
+       else if (getuser.type == 1) {
+        console.log(getuser)
         Patient.findOne({ userId: getuser._id }).then((response) => {
           if (!response) {
             return res
@@ -63,6 +66,12 @@ exports.signIn = (req, res) => {
             user: getuser,
             userData: response,
           });
+        });
+      } else {
+        res.status(200).json({
+          Token: jwtToken,
+          expiresIn: 3600,
+          user: getuser,
         });
       }
     })
