@@ -50,8 +50,7 @@ exports.signIn = (req, res) => {
             userData: response,
           });
         });
-      } else if (getuser.type == 1) {
-        console.log(getuser);
+      } else {
         Patient.findOne({ userId: getuser._id }).then((response) => {
           if (!response) {
             return res
@@ -64,12 +63,6 @@ exports.signIn = (req, res) => {
             user: getuser,
             userData: response,
           });
-        });
-      } else {
-        res.status(200).json({
-          Token: jwtToken,
-          expiresIn: 3600,
-          user: getuser,
         });
       }
     })
@@ -87,7 +80,7 @@ exports.signUp = (req, res) => {
     let user = new User({
       email: req.body.email,
       password: hash,
-      type: req.body.type,
+      type: 0,
     });
     user.save((err, user) => {
       if (err || !user) {
@@ -125,7 +118,7 @@ exports.signUpOfPatient = (req, res) => {
     let user = new User({
       email: req.body.email,
       password: hash,
-      type: req.body.type,
+      type: 1,
     });
     user.save((err, user) => {
       if (err || !user) {
