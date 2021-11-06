@@ -4,7 +4,7 @@ exports.SuggestionId = (req, res, next, Id) => {
   Suggestion.findById(Id).exec((err, suggestion) => {
     if (err) {
       return res
-        .status(400)
+        .status(200)
         .json({ message: "suggestionId has not been created" });
     }
     req.Suggestion = suggestion;
@@ -24,7 +24,7 @@ exports.createSuggestion = (req, res) => {
   });
   suggestion.save((err, suggestion) => {
     if (err || !suggestion) {
-      return res.status(400).json({ message: "Error in saving suggestion" });
+      return res.status(200).json({ message: "Error in saving suggestion" });
     }
     res.json(suggestion);
   });
@@ -37,7 +37,7 @@ exports.getSuggestion = (req, res) => {
 exports.getAllSuggestion = (req, res) => {
   Suggestion.find().exec((err, suggestion) => {
     if (err) {
-      return res.status(400).json({ message: "can`t get all conditions" });
+      return res.status(200).json({ message: "can`t get all conditions" });
     }
     res.json(suggestion);
   });

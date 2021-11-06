@@ -4,7 +4,7 @@ const Patient = require("../models/patient");
 exports.dailyReportId = (req, res, next, Id) => {
   Daily.findById(Id).exec((err, Report) => {
     if (err) {
-      return res.status(400).json({ message: " ReportId not created" });
+      return res.status(200).json({ message: " ReportId not created" });
     }
     req.daily = Report;
     next();
@@ -26,7 +26,7 @@ exports.createdailyReport = (req, res) => {
   });
   dailyReport.save((err, dailyReport) => {
     if (err) {
-      return res.status(400).json({ message: "Error in saving daily report" });
+      return res.status(200).json({ message: "Error in saving daily report" });
     }
     Patient.findOneAndUpdate(
       { userId: req.userDetails._id },
@@ -35,7 +35,7 @@ exports.createdailyReport = (req, res) => {
       }
     ).exec((err, pia) => {
       if (err) {
-        return res.status(400).json({ message: "can`t update date" });
+        return res.status(200).json({ message: "can`t update date" });
       }
       res.json(dailyReport);
     });
@@ -68,7 +68,7 @@ exports.Reportupdate = (req, res) => {
     }
   ).exec((err, dailyReport) => {
     if (err) {
-      return res.status(400).json({ message: "Error in updating dailyReport" });
+      return res.status(200).json({ message: "Error in updating dailyReport" });
     }
     res.json(dailyReport);
   });

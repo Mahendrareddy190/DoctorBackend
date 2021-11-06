@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 exports.userId = (req, res, next, Id) => {
   User.findById(Id).exec((err, user) => {
     if (err || !user) {
-      return res.status(400).json({ message: "User not found" });
+      return res.status(200).json({ message: "User not found" });
     }
     req.userDetails = user;
     next();
@@ -41,7 +41,7 @@ exports.signIn = (req, res) => {
       if (getuser.type == 0) {
         Doctor.findOne({ userId: getuser._id }).then((response) => {
           if (!response) {
-            return res.status(400).json({ message: "no response from doctor" });
+            return res.status(200).json({ message: "no response from doctor" });
           }
           res.status(200).json({
             Token: jwtToken,
@@ -50,14 +50,12 @@ exports.signIn = (req, res) => {
             userData: response,
           });
         });
-      }
-       
-       else if (getuser.type == 1) {
-        console.log(getuser)
+      } else if (getuser.type == 1) {
+        console.log(getuser);
         Patient.findOne({ userId: getuser._id }).then((response) => {
           if (!response) {
             return res
-              .status(400)
+              .status(200)
               .json({ message: "no response from patient" });
           }
           res.status(200).json({
@@ -76,7 +74,7 @@ exports.signIn = (req, res) => {
       }
     })
     .catch((err) => {
-      return res.status(401).json({
+      return res.status(200).json({
         error: "singIn faliled ",
       });
     });
@@ -93,7 +91,7 @@ exports.signUp = (req, res) => {
     });
     user.save((err, user) => {
       if (err || !user) {
-        return res.status(400).json({ message: "user already exists" });
+        return res.status(200).json({ message: "user already exists" });
       }
       createDoctorDetails(req.body, user._id);
       res.status(200).json({ message: "successfully created" });
@@ -131,7 +129,7 @@ exports.signUpOfPatient = (req, res) => {
     });
     user.save((err, user) => {
       if (err || !user) {
-        return res.status(400).json({ message: "User already exists" });
+        return res.status(200).json({ message: "User already exists" });
       }
       let doctorId = req.doctorDetails._id;
       let conId = req.condition._id;
@@ -166,7 +164,7 @@ exports.updatepassword = (req, res) => {
       { $set: { password: password } }
     ).exec((err, user) => {
       if (err) {
-        return res.status(400).json({ message: "password has not updated" });
+        return res.status(200).json({ message: "password has not updated" });
       }
       res.json(user);
     });
@@ -184,7 +182,7 @@ exports.getuser = (req, res) => {
 exports.getAllUser = (req, res) => {
   User.find().exec((err, user) => {
     if (err) {
-      return res.status(400).json({
+      return res.status(200).json({
         error: "can`t get users",
       });
     }

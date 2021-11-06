@@ -4,7 +4,7 @@ exports.ConditionId = (req, res, next, Id) => {
   Conditions.findById(Id).exec((err, condtions) => {
     if (err) {
       return res
-        .status(400)
+        .status(200)
         .json({ message: "conditionId has not been created" });
     }
     req.condition = condtions;
@@ -18,7 +18,7 @@ exports.createCondtions = (req, res) => {
   });
   condtions.save((err, condtions) => {
     if (err || !condtions) {
-      return res.status(400).json({ message: "conditions not created" });
+      return res.status(200).json({ message: "conditions not created" });
     }
     res.json(condtions);
   });
@@ -31,7 +31,7 @@ exports.getConditions = (req, res) => {
 exports.getAllConditions = (req, res) => {
   Conditions.find().exec((err, conditions) => {
     if (err) {
-      return res.status(400).json({ message: "can`t get all conditions" });
+      return res.status(200).json({ message: "can`t get all conditions" });
     }
     res.json(conditions);
   });

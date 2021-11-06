@@ -3,7 +3,7 @@ const Doctor = require("../models/doctor");
 exports.doctorId = (req, res, next, Id) => {
   Doctor.findById(Id).exec((err, doctor) => {
     if (err || !doctor) {
-      return res.status(400).json({ message: err.message });
+      return res.status(200).json({ message: err.message });
     }
     req.doctorDetails = doctor;
     next();
@@ -19,7 +19,7 @@ exports.getAllDoctors = (req, res) => {
     .populate("User")
     .exec((err, doctor) => {
       if (err) {
-        return res.status(400).json({ message: "can`t get all doctorDetails" });
+        return res.status(200).json({ message: "can`t get all doctorDetails" });
       }
       res.json(doctor);
     });
