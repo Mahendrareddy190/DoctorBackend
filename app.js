@@ -42,6 +42,7 @@ const {
   getAlldailyReport,
   getdailyReport,
   Reportupdate,
+  Reportupdate1
 } = require("./controls/dailyReport");
 
 const {
@@ -115,6 +116,7 @@ app.post(
 app.get("/api/getAlldailyReport", getAlldailyReport);
 app.get("/api/getdailyReport/:dailyReportId", getdailyReport);
 app.put("/api/updatereport/:dailyReportId", Reportupdate);
+app.put("/api/updatereport1/:dailyReportId", Reportupdate1);
 
 // *************************************************** Conditions routes*******************************************
 

@@ -20,6 +20,7 @@ exports.createdailyReport = (req, res) => {
     conditionId: conId,
     suggestionId: suggId,
     dailyUpdate: req.body.dailyUpdate,
+    dailyUpdate1: req.body.dailyUpdate1,
     painLevel: req.body.painLevel,
     review: req.body.review,
     reviewStatus: req.body.reviewStatus,
@@ -69,6 +70,22 @@ exports.Reportupdate = (req, res) => {
   ).exec((err, dailyReport) => {
     if (err) {
       return res.status(200).json({ message: "Error in updating dailyReport" });
+    }
+    res.json(dailyReport);
+  });
+};
+
+exports.Reportupdate1 = (req, res) => {
+  Daily.findOneAndUpdate(
+    { _id: req.daily._id },
+    {
+      $set: req.body,
+    }
+  ).exec((err, dailyReport) => {
+    if (err) {
+      return res
+        .status(200)
+        .json({ message: "Error in updating dailyReport1" });
     }
     res.json(dailyReport);
   });
