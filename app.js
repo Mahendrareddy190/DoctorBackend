@@ -42,7 +42,7 @@ const {
   getAlldailyReport,
   getdailyReport,
   Reportupdate,
-  Reportupdate1
+  Reportupdate1,
 } = require("./controls/dailyReport");
 
 const {
